@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Static check
+        run: python scripts/static_check.py
+
+      - name: Validate bundled example
+        run: python scripts/validate_deck.py examples/shapeup-skill-linear-vercel-deck.html
+
+      - name: Eval smoke test
+        run: |
+          python -c "
+          import json, sys
+          cases = json.load(open('evals/cases.json'))
+          print(f'Eval cases: {len(cases)}')
+          for c in cases:
+              assert 'id' in c and 'input' in c and 'expected' in c, f'Invalid case: {c}'
+          print('All eval cases valid')
+          "
+
+      - name: Verify scripts are executable
+        run: |
+          test -x scripts/static_check.py
+          test -x scripts/validate_deck.py
+          test -x scripts/init_deck.py
+          echo 'All scripts executable'
+
+  lint-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check README references
+        run: |
+          test -f README.md || (echo 'README.md missing' && exit 1)
+          test -f SKILL.md || (echo 'SKILL.md missing' && exit 1)
+          echo 'Core files present'
+
+      - name: Check CHANGELOG
+        run: |
+          test -f CHANGELOG.md || (echo 'CHANGELOG.md missing' && exit 1)
+          echo 'Changelog present'

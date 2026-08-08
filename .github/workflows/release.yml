@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          cat << 'EOF' > /tmp/release_body.md
+          ## What's Changed
+
+          See [CHANGELOG.md](./CHANGELOG.md) for full release notes.
+
+          ## Installation
+
+          ```bash
+          npx skills add lora-sys/teaching-html-story-deck
+          ```
+
+          ## Files
+
+          - `SKILL.md` — Core skill definition
+          - `references/` — Design system, visual framework, quality gates
+          - `examples/` — Worked Shape Up deck example
+          - `evals/` — Evaluation cases and rubric
+          - `scripts/` — Validation and scaffolding tools
+          EOF
+          echo "notes<<EOF" >> "$GITHUB_OUTPUT"
+          cat /tmp/release_body.md >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: false
+          body_path: /tmp/release_body.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

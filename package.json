@@ -1,0 +1,61 @@
+{
+  "name": "teaching-html-story-deck",
+  "version": "1.0.0",
+  "description": "A reusable Agent Skill for producing polished standalone teaching HTML pages with content-specific SVG diagrams and advanced but restrained motion.",
+  "license": "MIT",
+  "author": {
+    "name": "lora-sys",
+    "url": "https://github.com/lora-sys"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lora-sys/teaching-html-story-deck.git"
+  },
+  "homepage": "https://github.com/lora-sys/teaching-html-story-deck#readme",
+  "bugs": {
+    "url": "https://github.com/lora-sys/teaching-html-story-deck/issues"
+  },
+  "keywords": [
+    "agent-skill",
+    "teaching",
+    "html",
+    "storytelling",
+    "svg",
+    "presentation",
+    "interactive",
+    "claude-code",
+    "cline",
+    "codex",
+    "opencode",
+    "narrative-design"
+  ],
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "agents/",
+    "assets/",
+    "references/",
+    "examples/",
+    "evals/",
+    "scripts/"
+  ],
+  "scripts": {
+    "validate": "python scripts/validate_deck.py",
+    "static-check": "python scripts/static_check.py",
+    "smoke-test": "python scripts/validate_deck.py examples/shapeup-skill-linear-vercel-deck.html",
+    "scaffold": "python scripts/init_deck.py",
+    "check": "python scripts/static_check.py && python scripts/validate_deck.py examples/shapeup-skill-linear-vercel-deck.html",
+    "test": "python scripts/static_check.py"
+  },
+  "engines": {
+    "node": ">=18",
+    "python": ">=3.10"
+  },
+  "skill": {
+    "name": "teaching-html-story-deck",
+    "description": "Create or upgrade standalone interactive teaching HTML story decks with problem-first narrative, content-specific inline SVG diagrams, and restrained motion.",
+    "entry": "SKILL.md"
+  }
+}
