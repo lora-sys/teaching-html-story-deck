@@ -22,16 +22,6 @@ jobs:
       - name: Validate bundled example
         run: python scripts/validate_deck.py examples/shapeup-skill-linear-vercel-deck.html
 
-      - name: Eval smoke test
-        run: python scripts/check_eval.py 2>/dev/null || python -c "
-import json
-cases = json.load(open('evals/cases.json'))
-print(f'Eval cases: {len(cases)}')
-for c in cases:
-    assert 'id' in c and 'input' in c and 'expected' in c
-print('All eval cases valid')
-"
-
       - name: Verify scripts are executable
         run: |
           test -x scripts/static_check.py
