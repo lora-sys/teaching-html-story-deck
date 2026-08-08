@@ -1,0 +1,12 @@
+PASS doctype
+PASS title
+PASS viewport
+PASS slides
+PASS script
+PASS keyboard
+PASS fullscreen
+PASS reduced_motion
+PASS no_external_scripts
+PASS no_external_styles
+PASS svg_accessibility
+slides=1 svgs=0 accessible_svgs=0
